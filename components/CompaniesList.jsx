@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import CompanyModal from "./CompanyModal";
 
 const CompaniesList = () => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCompany, setSelectedCompany] = useState(null);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -50,7 +52,6 @@ const CompaniesList = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {companies.map((company) => {
-          //  Extract website if available, otherwise use Google search as fallback
           const website =
             company.hjemmeside ||
             `https://www.google.com/search?q=${encodeURIComponent(
@@ -60,17 +61,14 @@ const CompaniesList = () => {
           return (
             <div
               key={company.organisasjonsnummer}
-              className="p-5 bg-gray-800 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-transform"
+              className={`p-5 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-105 transition-transform ${
+                company.konkurs ? "bg-red-600 text-white" : "bg-gray-800"
+              }`}
+              onClick={() => setSelectedCompany(company)} // ✅ Click to open modal
             >
-              {/* Clickable company name */}
-              <a
-                href={website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-lg font-semibold text-blue-400 hover:underline"
-              >
+              <h3 className="text-lg font-semibold text-blue-400 hover:underline">
                 {company.navn}
-              </a>
+              </h3>
 
               <p className="text-gray-400 text-sm">
                 📜 Org. Number:{" "}
@@ -81,10 +79,21 @@ const CompaniesList = () => {
               <p className="text-gray-400 text-sm mt-1">
                 📅 Founded: {company.stiftelsesdato || "N/A"}
               </p>
+              {company.konkurs && (
+                <p className="text-yellow-300">⚠️ Bankrupt</p>
+              )}
             </div>
           );
         })}
       </div>
+
+      {/* Show Modal when a company is selected */}
+      {selectedCompany && (
+        <CompanyModal
+          company={selectedCompany}
+          onClose={() => setSelectedCompany(null)}
+        />
+      )}
     </div>
   );
 };
