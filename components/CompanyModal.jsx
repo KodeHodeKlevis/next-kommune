@@ -10,9 +10,9 @@ const CompanyModal = ({ company, onClose }) => {
     `https://www.google.com/search?q=${encodeURIComponent(company.navn)}`;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
       <div
-        className={`p-6 rounded-lg shadow-lg max-w-lg ${
+        className={`p-6 rounded-lg shadow-lg max-w-lg w-full sm:w-3/4 md:w-1/2 ${
           company.konkurs ? "bg-red-600 text-white" : "bg-white text-black"
         }`}
       >

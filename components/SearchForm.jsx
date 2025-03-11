@@ -72,8 +72,8 @@ const SearchForm = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-blue-400 mb-6 text-center">
+    <div className="p-4 sm:p-6 max-w-6xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg">
+      <h1 className="text-2xl sm:text-3xl font-bold text-blue-400 mb-6 text-center">
         Find Companies in Norway
       </h1>
 
@@ -86,15 +86,11 @@ const SearchForm = () => {
         disabled={municipalities.length === 0}
       >
         <option value="">Select Municipality</option>
-        {municipalities.length === 0 ? (
-          <option disabled>❌ No municipalities available</option>
-        ) : (
-          municipalities.map((muni) => (
-            <option key={muni.nummer} value={muni.nummer}>
-              {muni.navn} ({muni.nummer})
-            </option>
-          ))
-        )}
+        {municipalities.map((muni) => (
+          <option key={muni.nummer} value={muni.nummer}>
+            {muni.navn} ({muni.nummer})
+          </option>
+        ))}
       </select>
 
       {/* Year Input */}
@@ -124,16 +120,16 @@ const SearchForm = () => {
       {/* Display Companies */}
       <div className="mt-8">
         {companies.length === 0 && !loading ? (
-          <p className="text-gray-400">
+          <p className="text-gray-400 text-center">
             ❌ No companies found for this selection.
           </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {companies.map((company) => (
               <div
                 key={company.organisasjonsnummer}
                 onClick={() => setSelectedCompany(company)}
-                className={`border border-gray-700 p-4 rounded-lg shadow-md cursor-pointer hover:shadow-xl transition-transform transform hover:scale-105 ${
+                className={`p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-transform transform hover:scale-105 ${
                   company.konkurs ? "bg-red-600 text-white" : "bg-gray-800"
                 }`}
               >
