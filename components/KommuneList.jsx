@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-
+import { useRouter } from "next/navigation";
 const KommuneList = () => {
   const [kommuneData, setKommuneData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchKommuneData = async () => {
@@ -14,28 +15,21 @@ const KommuneList = () => {
           "https://data.brreg.no/enhetsregisteret/api/kommuner"
         );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
+        if (!response.ok) throw new Error("Failed to fetch data");
 
         const data = await response.json();
-        console.log("Kommune API Response:", data); // Debugging log
 
-        // Extract data and ensure all municipalities are included
-        let allKommuner = [];
         if (
           data._embedded?.kommuner &&
           Array.isArray(data._embedded.kommuner)
         ) {
-          allKommuner = data._embedded.kommuner;
+          const sortedMunicipalities = data._embedded.kommuner.sort((a, b) =>
+            a.navn.localeCompare(b.navn, "nb")
+          );
+          setKommuneData(sortedMunicipalities);
         } else {
           throw new Error("Unexpected API response format");
         }
-
-        // 🔹 Sort the municipalities alphabetically by name
-        allKommuner.sort((a, b) => a.navn.localeCompare(b.navn, "nb"));
-
-        setKommuneData(allKommuner);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -46,21 +40,26 @@ const KommuneList = () => {
     fetchKommuneData();
   }, []);
 
-  if (loading) return <p className="text-yellow-400">⏳ Loading kommunes...</p>;
+  const handleClick = (kommune) => {
+    router.push(`/kommune/${kommune.nummer}`);
+  };
+
+  if (loading)
+    return <p className="text-yellow-400">⏳ Loading municipalities...</p>;
   if (error) return <p className="text-red-500">⚠️ Error: {error}</p>;
 
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg">
+    <div className="p-6 max-w-6xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold text-blue-400 mb-6 text-center">
         List of Municipalities in Norway
       </h1>
 
-      {/* Kommune Grid List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {kommuneData.map((kommune) => (
           <div
             key={kommune.nummer}
-            className="border border-gray-700 p-4 rounded-lg bg-gray-800 shadow-md hover:shadow-lg transition"
+            onClick={() => handleClick(kommune)}
+            className="border border-gray-700 p-4 rounded-lg bg-gray-800 shadow-md hover:bg-blue-500 hover:shadow-xl hover:scale-105 transition cursor-pointer"
           >
             <h2 className="font-bold text-blue-300">{kommune.navn}</h2>
             <p className="text-sm text-gray-400">
