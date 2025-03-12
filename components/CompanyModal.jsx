@@ -5,9 +5,10 @@ import React from "react";
 const CompanyModal = ({ company, onClose }) => {
   if (!company) return null;
 
-  const website =
-    company.hjemmeside ||
-    `https://www.google.com/search?q=${encodeURIComponent(company.navn)}`;
+  const website = company.hjemmeside || null; // Check if website exists
+  const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(
+    company.navn
+  )}`;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
@@ -20,15 +21,31 @@ const CompanyModal = ({ company, onClose }) => {
         <p>📜 Org. Number: {company.organisasjonsnummer}</p>
         <p>📅 Founded: {company.stiftelsesdato || "N/A"}</p>
         <p>🏢 Industry: {company.naeringskode1?.beskrivelse || "N/A"}</p>
+        <p>👥 Employees: {company.antallAnsatte || "Unknown"}</p>
+        <p>📍 Address: {company.forretningsadresse?.adresse || "N/A"}</p>
+        <p>🏛️ Municipality: {company.forretningsadresse?.kommune || "N/A"}</p>
+        <p>📬 Postal Code: {company.forretningsadresse?.postnummer || "N/A"}</p>
 
-        <a
-          href={website}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block mt-4 text-blue-500 hover:underline"
-        >
-          🌍 Visit Website
-        </a>
+        {/* Website Link - Opens in a New Tab */}
+        {website ? (
+          <a
+            href={website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block mt-4 text-blue-500 hover:underline cursor-pointer "
+          >
+            🌍 Visit Website
+          </a>
+        ) : (
+          <a
+            href={googleSearchUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block mt-4 text-gray-500 hover:underline cursor-pointer "
+          >
+            🔍 Search on Google
+          </a>
+        )}
 
         <button
           onClick={onClose}

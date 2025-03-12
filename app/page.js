@@ -18,13 +18,13 @@ const HomePage = () => {
       {/* Navigation Buttons */}
       <div className="mt-8 flex flex-col sm:flex-row gap-6 justify-center w-full sm:w-auto">
         <Link href="/kommune">
-          <button className="w-full sm:w-auto px-6 py-3 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 transition shadow-md">
+          <button className="w-full sm:w-auto px-6 py-3 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 transition shadow-md cursor-pointer">
             🏙️ Explore Municipalities
           </button>
         </Link>
 
         <Link href="/companies">
-          <button className="w-full sm:w-auto px-6 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition shadow-md">
+          <button className="w-full sm:w-auto px-6 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition shadow-md cursor-pointer ">
             🏢 Search Companies
           </button>
         </Link>
