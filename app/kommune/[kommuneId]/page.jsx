@@ -56,7 +56,7 @@ const MunicipalityDetails = () => {
       {/* Back Button */}
       <button
         onClick={() => router.back()}
-        className="mt-6 px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600 transition"
+        className="mt-6 px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600 transition cursor-pointer"
       >
         ⬅ Back to List
       </button>
